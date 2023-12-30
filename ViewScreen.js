@@ -1,5 +1,5 @@
 import {app, database, storage} from './Firebase';
-import {collection, doc } from 'firebase/firestore';
+import {collection, doc, getDoc } from 'firebase/firestore';
 import React, {useState, useEffect} from 'react';
 import { View, Text, Button, StyleSheet, Image } from 'react-native';
 import { useCollection } from 'react-firebase-hooks/firestore';
@@ -7,21 +7,21 @@ import { ref, getDownloadURL } from 'firebase/storage';
 
 
 export default function ViewScreen({navigation, route}){
-    const { id, text: initialText } = route.params;
+    const { id, text: initialText, alias: initialAlias } = route.params;
     const [text, setText] = useState(initialText);
-    const [noteName, setNoteName] = useState("");
+    const [alias, setAlias] = useState(initialAlias)
 
     useEffect(() => {
         async function fetchNote() {
             try {
                 const noteRef = doc(database, "Notes", id);
-                const noteSnapshot = await noteRef.get();
+                const noteSnapshot = await getDoc(noteRef);
                 
                 if (noteSnapshot.exists()) {
                     const noteData = noteSnapshot.data();
                     setText(noteData.text);
-                    const orderNumber = noteData.orderNumber; 
-                    setNoteName(`Note${orderNumber}`);
+                    setAlias(noteData.alias)
+                    const orderNumber = noteData.orderNumber;
                 } else {
                     console.log("No such note!");
                 }
@@ -32,10 +32,9 @@ export default function ViewScreen({navigation, route}){
     
         fetchNote();
     }, [id]);
-
  return(
     <View style={styles.container}>
-        <Text>{noteName}</Text>
+        <Text style={styles.alias}>{alias}</Text>
         <Text>
             {text}
         </Text>
@@ -65,5 +64,9 @@ const styles = StyleSheet.create({
         padding: 10,
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
+    },alias: {
+        fontWeight: 'bold',
+        fontSize: 18,
+        marginBottom: 10, 
     }
 });

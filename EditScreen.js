@@ -1,5 +1,5 @@
 import{app, database} from './Firebase'
-import { collection, addDoc, Firestore, doc, updateDoc } from 'firebase/firestore';
+import { collection, doc, updateDoc, getDoc } from 'firebase/firestore';
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, Button, ScrollView } from 'react-native';
 import {useCollection} from 'react-firebase-hooks/firestore'
@@ -12,7 +12,7 @@ export default function EditScreen({ route, navigation }) {
         async function fetchNote() {
             try {
                 const noteRef = doc(database, "Notes", id);
-                const noteSnapshot = await noteRef.get();
+                const noteSnapshot = await getDoc(noteRef);
                 
                 if (noteSnapshot.exists()) {
                     setText(noteSnapshot.data().text);

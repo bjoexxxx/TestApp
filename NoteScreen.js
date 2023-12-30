@@ -8,6 +8,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export default function NoteScreen({navigation}) {
  const [text, setText] = useState('')
+ const [alias, setAlias] = useState('')
  const [imagePath, setImagePath] = useState(null);
  const showOptions = () => {
   ActionSheetIOS.showActionSheetWithOptions(
@@ -26,7 +27,8 @@ export default function NoteScreen({navigation}) {
  async function AddNote(){
   try{
   await addDoc(collection(database, "Notes"), {
-    text: text
+    text: text,
+    alias: alias
   })}
   catch(err){
     console.log("fejl i DB " + err)
@@ -39,7 +41,14 @@ return (
     <TextInput 
       style={styles.input} 
       multiline={true}
+      onChangeText={(txt) => setAlias(txt)}
+      placeholder='Enter Note Name Here'
+    />
+    <TextInput 
+      style={styles.input} 
+      multiline={true}
       onChangeText={(txt) => setText(txt)}
+      placeholder='Enter Body Text'
     />
     {imagePath && (
        <Image 

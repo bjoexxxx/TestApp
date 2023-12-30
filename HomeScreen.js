@@ -44,7 +44,7 @@ export default function HomeScreen({ navigation }) {
             
             <FlatList 
         data={data}
-        renderItem={({ item, index }) => renderItem({ item, index, navigation, noteActionSheet })}
+        renderItem={({ item }) => renderItem({ item, noteActionSheet })}
         keyExtractor={item => item.id}
       />
             
@@ -65,11 +65,10 @@ export default function HomeScreen({ navigation }) {
     { id: '3', text: 'Item 3', age: 11 },
 ];*/
 
-const renderItem = ({ item, index, navigation, noteActionSheet }) => {
-    const noteLabel = `Note${index + 1}`;
+const renderItem = ({ item, noteActionSheet }) => {
     return (
       <View style={styles.listItemContainer}>
-        <Button title={noteLabel} onPress={() => noteActionSheet(item)}/>
+        <Button title={item.alias} onPress={() => noteActionSheet(item)}/>
       </View>
     );
   };
