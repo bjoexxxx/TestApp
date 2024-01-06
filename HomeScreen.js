@@ -31,8 +31,8 @@ export default function HomeScreen({ navigation }) {
             cancelButtonIndex: 0,
         },
         buttonIndex => {
-            if (buttonIndex === 1) navigation.navigate('View', {id: item.id, text: item.text});
-            else if (buttonIndex === 2) navigation.navigate('Edit', { id: item.id, text: item.text });
+            if (buttonIndex === 1) navigation.navigate('View', {id: item.id, text: item.text, alias: item.alias, image: item.image});
+            else if (buttonIndex === 2) navigation.navigate('Edit', { id: item.id, text: item.text, alias: item.alias, image: item.image });
             else if (buttonIndex === 3) deleteItem(item.id);
           },
     );
