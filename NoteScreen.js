@@ -54,15 +54,16 @@ async function AddNote(){
 
 return (
   <ScrollView style={styles.container}>
-    <Text>New Note:</Text>
     <Modal style={styles.modal} visible={isModalOpen} onRequestClose={closeModal}>
      <TextInput
-       style={styles.input}
+       style={styles.modalInput}
        onChangeText={(txt) => setImageURL(txt)}
        placeholder='Enter Download Filename'
      />
      <Button title='Download Image' onPress={() => handleDownload(setImagePath, imageURL, closeModal)}/>
+     <Button title='Cancel' onPress={() => closeModal()}/>
     </Modal>
+    <Text>New Note:</Text>
     <TextInput 
       style={styles.input} 
       multiline={true}
@@ -164,13 +165,22 @@ const styles = StyleSheet.create({
     width: '60%', // Make it a bit narrower than the modal itself
     alignSelf: 'center', // Center it within the modal
   },
+  modalInput: {
+    borderWidth: 1,
+    borderColor: 'gray',
+    padding: 10,
+    marginTop: 100,
+    marginBottom: 10, // Add a little space at the bottom too
+    maxHeight: '20%', // Adjust as needed to control the height within the modal
+    width: '60%', // Make it a bit narrower than the modal itself
+    alignSelf: 'center',
+  },
   image: {
     width: '100%',
     height: 200,
     marginTop: 10,
   },
   modalContainer: {
-    position: 'absolute',
     top: '25%',  // Adjust this value to move the container up or down
     left: '10%',  // Adjust this value to move the container left or right
     width: '80%', // Width of the container
@@ -179,10 +189,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modal: {
-    
-  },
-  modalInput: {
-    
+    top: 0,
+    left: 0,
+    width: '60%',
+    height: '30%',
+    display: 'flex',
+    alignitems: 'center',
+    justifycontent: 'center'
   }
 });
 
