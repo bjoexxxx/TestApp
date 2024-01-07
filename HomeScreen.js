@@ -43,18 +43,11 @@ export default function HomeScreen({ navigation }) {
             <Text>These are your notes!</Text>
             
             <FlatList 
-        data={data}
-        renderItem={({ item }) => renderItem({ item, noteActionSheet })}
-        keyExtractor={item => item.id}
-      />
-            
-            <Button title="Add New Note" onPress={() => navigation.navigate('Notes')} />
-            <Image style={{width:200, height:200}} source={{uri: imagePath}} />
-            <Button title="Pick image" onPress={() => launchImagePicker(setImagePath)} />
-            <Button title="Upload image" onPress={() => uploadImage(imagePath)} />
-            <Button title="Download image" onPress={() => downloadImage(setImagePath)} />
-            <Button title="Camera" onPress={() => launchCamera(setImagePath)} />
-
+              data={data}
+              renderItem={({ item }) => renderItem({ item, noteActionSheet })}
+              keyExtractor={item => item.id}
+            />
+            <Button style={styles.button} title="Add New Note" onPress={() => navigation.navigate('Notes')} />
             </View>
     );
 }
@@ -78,50 +71,6 @@ async function deleteItem(id) {
     await deleteDoc(doc(database, "Notes", id));
 };
 
-async function launchCamera(setImagePath){
-    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-    if (permissionResult.granted === false) {
-        alert("Camera Access Not Provided");
-        return;
-    }
-    const result = await ImagePicker.launchCameraAsync({ quality: 1 });
-    if (!result.canceled) {
-        setImagePath(result.assets[0].uri);
-    }
-}
-
-async function launchImagePicker(setImagePath){
-    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (permissionResult.granted === false) {
-        alert("Media Library Access Not Provided");
-        return;
-    }
-    const result = await ImagePicker.launchImageLibraryAsync({ allowsEditing: true });
-    if (!result.canceled) {
-        setImagePath(result.assets[0].uri);
-    }
-}
-
-async function uploadImage(imagePath){
-    const res = await fetch(imagePath)
-    const blob = await res.blob()
-    const storageRef = ref(storage, "myImage.jpg")
-    uploadBytes(storageRef, blob).then((snapshot) => {
-        alert("Image Uploaded")
-    })
-}
-
-async function downloadImage(setImagePath){
-    getDownloadURL(ref(storage, "myImage.jpg")).then((url) => {
-        setImagePath(url)
-    })
-    .catch((error) => 
-    alert("fejl i image download" + error))
-}
-
-
-
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -141,6 +90,11 @@ const styles = StyleSheet.create({
         padding: 10,
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
+    },
+    button:{
+      marginBottom: 100,
+      justifyContent: 'center',
+      paddingBottom: 20,
     }
 });
 
